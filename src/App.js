@@ -1,26 +1,22 @@
 import React,{Component} from 'react';
 import './App.css';
-import firebase from './fire'
+import { connect } from 'react-redux'
+import {fetchWorkouts} from './store/workouts';
+import Navbar from './components/navbar';
 
 class App extends Component {
-  constructor(){
-    super()
-    this.database = firebase.database()
-    console.log("Firebase database: ", this.database)
-
-  
+  constructor(props){
+    super(props)
+    console.log(props)
+    
   }
   componentDidMount(){
-    let workoutRef = firebase.database().ref('/workouts');
-
-    let test = workoutRef.on('value',(snap) =>{
-      console.log(snap.val())
-    })
-    console.log(test)
-  }
+    console.log("Fetching workouts: ", this.props.fetchWorkouts())
+  }  
   render(){
     return (
       <div className="App">
+        <Navbar />
         <header className="App-header">
           Tabata Bro!
         </header>
@@ -29,4 +25,15 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapState = (state) => {
+  return {
+    workouts: state.workoutReducer,
+  };
+};
+const mapDispatch = (dispatch) => {
+  return {
+    fetchWorkouts: () => dispatch(fetchWorkouts())
+  };
+};
+
+export default connect(mapState, mapDispatch)(App);

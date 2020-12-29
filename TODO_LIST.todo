@@ -1,0 +1,22 @@
+Database
+- Update to database
+- structure database
+    - create more workouts
+    - create users
+
+UI
+- create add form page for workouts with React
+- create workout cards
+- create clicking functionality on menu
+- Add a create user page 
+
+App backend
+- structure store
+    - fix workout reducer issue
+- Firebase database CRUD
+    - WRITE to workouts database 
+    - UPDATE to workouts database {user, workouts}
+
+Styling
+- create theming provider with material-ui themes
+- find coloring palette
