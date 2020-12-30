@@ -5,6 +5,7 @@ Database
     - create users
 
 UI
+- setup routes @done
 - create add form page for workouts with React
 - create workout cards
 - create clicking functionality on menu
