@@ -24,3 +24,8 @@
   flex-grow:1;
   text-align: left;
 }
+
+/* Create Workout Page styles */
+.formStyles{
+  padding-top:10vh
+}

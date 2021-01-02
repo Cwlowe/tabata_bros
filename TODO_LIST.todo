@@ -10,6 +10,8 @@ UI
 - create workout cards
 - create clicking functionality on menu
 - Add a create user page 
+- make toggle menu
+- create click action on 'Tabata Bros'
 
 App backend
 - structure store
@@ -21,3 +23,6 @@ App backend
 Styling
 - create theming provider with material-ui themes
 - find coloring palette
+
+Misc.
+- make imports cleaner
