@@ -1,4 +1,6 @@
 import React from 'react'
+import firebase from '../fire'
+//Material Ui
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Input from '@material-ui/core/Input';
@@ -16,6 +18,9 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField'
 
+
+
+
 const useStyles = makeStyles({
     root: {
       minWidth: 275,
@@ -27,7 +32,7 @@ const useStyles = makeStyles({
     },
   });
 
-export default function CreateWorkout(){
+  export default function CreateWorkout(){
     const [state, setState] = React.useState({
         name:"",
         description:"",
@@ -59,6 +64,10 @@ export default function CreateWorkout(){
 
     const handleSubmit=(event)=>{
         console.log(state)
+        //creates a workID for workout
+        let workoutID = state.name.toLowerCase().replace(/^\s+|\s+$/gm,'').split(' ').join('_')
+        let newState = {...state, id:workoutID}
+        pushNewWorkout(newState)
         setState({
             name:"",
             description:"",
@@ -72,8 +81,6 @@ export default function CreateWorkout(){
             }
         })
     }
-    const { core, lower_core, chest, obliques, arms, lower_body } = state;
-    console.log(Object.values(state.type).filter((v) => v === true))
     const error = Object.values(state.type).filter((v) => v === true).length === 0;
 
     return(
@@ -97,7 +104,7 @@ export default function CreateWorkout(){
                                             label="Description"
                                             multiline
                                             rows={5}
-                                            defaultValue=""
+                                            defaultValue={state.description}
                                             variant="outlined"
                                             onChange={handleChange}
                                             style={{maxWidth:"100vh"}}
@@ -109,27 +116,27 @@ export default function CreateWorkout(){
                                         <FormLabel component="legend">Pick multiple</FormLabel>
                                         <FormGroup>
                                         <FormControlLabel
-                                            control={<Checkbox checked={core} onChange={handleCheckbox} name="core" />}
+                                            control={<Checkbox checked={state.type.core} onChange={handleCheckbox} name="core" />}
                                             label="Core"
                                         />
                                         <FormControlLabel
-                                            control={<Checkbox checked={lower_core} onChange={handleCheckbox} name="lower_core" />}
+                                            control={<Checkbox checked={state.type.lower_core} onChange={handleCheckbox} name="lower_core" />}
                                             label="Lower Core"
                                         />
                                         <FormControlLabel
-                                            control={<Checkbox checked={chest} onChange={handleCheckbox} name="chest" />}
+                                            control={<Checkbox checked={state.type.chest} onChange={handleCheckbox} name="chest" />}
                                             label="Chest"
                                         />
                                         <FormControlLabel
-                                            control={<Checkbox checked={obliques} onChange={handleCheckbox} name="obliques" />}
+                                            control={<Checkbox checked={state.type.obliques} onChange={handleCheckbox} name="obliques" />}
                                             label="Obliques"
                                         />
                                         <FormControlLabel
-                                            control={<Checkbox checked={arms} onChange={handleCheckbox} name="arms" />}
+                                            control={<Checkbox checked={state.type.arms} onChange={handleCheckbox} name="arms" />}
                                             label="Arms"
                                         />
                                         <FormControlLabel
-                                            control={<Checkbox checked={lower_body} onChange={handleCheckbox} name="lower_body" />}
+                                            control={<Checkbox checked={state.type.lower_body} onChange={handleCheckbox} name="lower_body" />}
                                             label="Lower Body"
                                         />
                                         </FormGroup>
@@ -152,3 +159,12 @@ export default function CreateWorkout(){
     )
 }
 
+const pushNewWorkout = async (newWorkout) =>{
+    try{
+        let workoutRef = await firebase.database().ref('/workouts');
+        var newPostRef = workoutRef.push();
+        newPostRef.set(newWorkout)
+    }catch(err){
+        console.log(err)
+    }
+}

@@ -26,7 +26,7 @@ ReactDOM.render(
     <Router>
       <Route exact path="/" component={App}/>
       <Route path="/createWorkout" component={CreateWorkout}/>
-      <Route path="/wworkout" component={WorkoutsPage}/>
+      <Route path="/workouts" component={WorkoutsPage}/>
     </Router>
     </ThemeProvider>
   </Provider>,

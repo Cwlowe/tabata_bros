@@ -1,17 +1,17 @@
 Database
 - Update to database
 - structure database
-    - create more workouts
+    - create more workouts @done
     - create users
 
 UI
 - setup routes @done
-- create add form page for workouts with React
+- create add form page for workouts with React @done
 - create workout cards
-- create clicking functionality on menu
+- create clicking functionality on menu @done
 - Add a create user page 
-- make toggle menu
-- create click action on 'Tabata Bros'
+- make toggle menu @done
+- create click action on 'Tabata Bros' @done
 
 App backend
 - structure store
@@ -19,6 +19,7 @@ App backend
 - Firebase database CRUD
     - WRITE to workouts database 
     - UPDATE to workouts database {user, workouts}
+- create a database for sessions created
 
 Styling
 - create theming provider with material-ui themes
