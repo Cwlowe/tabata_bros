@@ -10,7 +10,8 @@ class App extends Component {
     
   }
   componentDidMount(){
-    console.log("Fetching workouts: ", this.props.fetchWorkouts())
+    this.props.fetchWorkouts()
+    
   }  
   render(){
     return (

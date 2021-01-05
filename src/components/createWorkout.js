@@ -18,9 +18,6 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField'
 
-
-
-
 const useStyles = makeStyles({
     root: {
       minWidth: 275,
@@ -48,7 +45,6 @@ const useStyles = makeStyles({
     const classes = useStyles();
 
     const handleCheckbox = (event) => {
-
         setState({ 
             ...state, 
             type: {

@@ -2,6 +2,7 @@ Database
 - Update to database
 - structure database
     - create more workouts @done
+    - create sessions
     - create users
 
 UI
@@ -12,6 +13,9 @@ UI
 - Add a create user page 
 - make toggle menu @done
 - create click action on 'Tabata Bros' @done
+- prevent users from submitting a empty form
+- validate submissions
+- 
 
 App backend
 - structure store
