@@ -6,16 +6,17 @@ Database
     - create users
 
 UI
+- Add a create user page 
+- create workout cards
 - setup routes @done
 - create add form page for workouts with React @done
-- create workout cards
 - create clicking functionality on menu @done
-- Add a create user page 
 - make toggle menu @done
 - create click action on 'Tabata Bros' @done
-- prevent users from submitting a empty form
-- validate submissions
-- 
+- prevent users from submitting a empty form @done
+- validate submissions @done
+- Create a message notifying data was sent
+- create sessions in workoutPages and send session to database
 
 App backend
 - structure store
@@ -31,3 +32,4 @@ Styling
 
 Misc.
 - make imports cleaner
+- issue with not enough workouts to select from

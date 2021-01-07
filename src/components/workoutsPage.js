@@ -1,7 +1,8 @@
 
 import React,{useState, useEffect} from 'react';
 import { useDispatch, useSelector} from 'react-redux'
-import {fetchWorkouts} from '../store/workouts';
+import {fetchWorkouts, fetchSessions} from '../store/workouts';
+import firebase from '../fire'
 //Material Ui
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -20,6 +21,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import TextField from '@material-ui/core/TextField'
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles({
     root: {
@@ -30,6 +32,10 @@ const useStyles = makeStyles({
     submitBtn:{
       marginLeft:"5%",
       marginRight:"5%"
+    },
+    sessionCards:{
+        backgroundColor:"#A9FFF7",
+        marginTop:"5%"
     }
   });
  const WorkoutsPage = ()=>{
@@ -38,7 +44,9 @@ const useStyles = makeStyles({
         sessions:[]
     })
     const classes = useStyles();
-    const workouts = Object.values(useSelector(state=>state.workoutReducer))
+    const workouts = useSelector(state=>state.state.workouts)
+    const sessions = useSelector(state=>state.state.sessions)
+    
     const dispatch = useDispatch()
     
     const toggleCreateView = () =>{
@@ -47,7 +55,7 @@ const useStyles = makeStyles({
 
     useEffect(()=>{
         dispatch(fetchWorkouts())
-        
+        dispatch(fetchSessions())
     },[dispatch])
 
     return(
@@ -59,7 +67,7 @@ const useStyles = makeStyles({
                        <Card className={classes.root} variant="outlined">
                         <CardContent >
                         {state.listView ? 
-                            <ListSession toggleCreateView={toggleCreateView} sessions={state.sessions}/> : 
+                            <ListSession toggleCreateView={toggleCreateView} sessions={sessions}/> : 
                             <CreateSession toggleCreateView={toggleCreateView} workouts={workouts}/>
                         }  
                         </CardContent>
@@ -75,7 +83,6 @@ const useStyles = makeStyles({
 const CreateSession = (props)=>{
     const [state,setState] = useState({
         name:"",
-        description:"",
         type:{
             core: false,
             lower_core: false,
@@ -83,7 +90,9 @@ const CreateSession = (props)=>{
             obliques:false,
             arms:false,
             lower_body:false,
-        }
+        },
+        error: false,
+        session:[],
     })
     const classes = useStyles();
 
@@ -98,36 +107,91 @@ const CreateSession = (props)=>{
     }
 
     const handleChange = (event) => {
-        setState({...state, [event.target.id]: event.target.value});
+        setState({
+            ...state, 
+            [event.target.id]: event.target.value,
+
+        });
     };
 
     const handleSubmit=(event)=>{
+        if(errorType || errorName){
+            setState({...state, error:true})
+        }else{
+            console.log("Creating session")
+            const session = createWorkout(state)
+            console.log("Send data: ", session)
+            sendData(session);
+            setState({
+                name:"",
+                type:{
+                    core: false,
+                    lower_core: false,
+                    chest: false,
+                    obliques:false,
+                    arms:false,
+                    lower_body:false,
+                },
+                errorType: true,
+                errorName: true,
+                error: false,
+                session:[]
+            })
+        }
         
-        setState({
-            name:"",
-            description:"",
-            type:{
-                core: false,
-                lower_core: false,
-                chest: false,
-                obliques:false,
-                arms:false,
-                lower_body:false,
-            }
-        })
     }
-    const error = Object.values(state.type).filter((v) => v === true).length === 0;
+    const createWorkout =(state)=>{
+        //create sessions
+        
+        let workouts = Object.values(props.workouts)
+        let session = []
+        let types = state.type;
+        while(session.length<4){
+            let randNum =  Math.floor((Math.random() * workouts.length));
+            let workout = workouts[randNum]
+            for(let i = 0; i<workout.type.length; i++){
+                if(types[workout.type[i]]){
+                    
+                    session.push(workouts.splice(randNum,1)[0])
+                }
+            }
+        }
+        console.log("in CreateWorkout: ", session)
+        return session
+    }
+    const sendData = async (session)=>{
+        try{
+            let sendData = {
+                name:state.name,
+                type:state.type,
+                session,
+            }
+            let workoutRef = await firebase.database().ref('/sessions');
+            var newPostRef = workoutRef.push();
+            newPostRef.set(sendData)
+        }catch(err){
+            console.log(err)
+        }
+    }
+    const errorType = Object.values(state.type).filter((v)=> v ===true).length === 0;
+    const errorName = state.name.length === 0;
     return(
         <>
             <div>
                 Create Session View
             </div>
+            {
+                state.error ? 
+                <Alert severity="error">Please fill out the required fields</Alert>:
+                null
+            }
             <form >
                 <Grid container spacing={3}>
                     <Grid item xs={6}>
-                        <FormControl>
+                        <FormControl required error={errorName}>
                             <InputLabel htmlFor="name">Session Name</InputLabel>
                             <Input id="name" value={state.name} onChange={handleChange} />
+                            <FormHelperText>This field is required</FormHelperText>
                         </FormControl>
                     </Grid>
                     {/* <Grid item xs={6}>
@@ -145,7 +209,7 @@ const CreateSession = (props)=>{
                     </FormControl>
                     </Grid> */}
                     <Grid item xs={12}>
-                    <FormControl required error={error} component="fieldset" className={classes.formControl}>
+                    <FormControl required error={errorType} component="fieldset" className={classes.formControl}>
                         <FormLabel component="legend">Pick types you want to work on.</FormLabel>
                         <FormGroup>
                         <FormControlLabel
@@ -179,6 +243,7 @@ const CreateSession = (props)=>{
                 </Grid>
             </form>
             <CardActions>
+                
                 <Link href="#" onClick={props.toggleCreateView}>
                 &lt;back
                 </Link>
@@ -192,21 +257,11 @@ const CreateSession = (props)=>{
         </>
     );
 }
+
 const ListSession = (props)=>{
     const classes = useStyles();
-    console.log(props.sessions.length)
-    const listSessions = (
-        <>
-        <h1>List of Sessions</h1>
-        {props.sessions.map(sess=>{
-            return(
-                <div>{sess}</div>
-            )
-        })}
-        </>
-    )
-    
-
+    let sessions = props.sessions ? Object.values(props.sessions) : []
+    console.log(sessions)
     return(
         <>
             <Grid container>
@@ -214,10 +269,27 @@ const ListSession = (props)=>{
                 <Button className={classes.button} variant="contained" color="primary" onClick={props.toggleCreateView}>Create a Random Session</Button>
                 </Grid>
                 <Grid item xs={12}>
-                    {props.sessions.length == 0 ? 
+                    {sessions.length === 0 ? 
                      <h1>There are no sessions right now please create one.</h1> 
                      : 
-                     {listSessions}
+                    <>
+                        <h1>List of Sessions</h1>
+                        {sessions.map(sess=>{
+                            return(
+                                <Card className={classes.sessionCards} id={sess.id}>
+                                    <CardContent>
+                                    <h2>{sess.name}</h2>
+                                    {sess.session.map((workouts)=>
+                                        <p>{workouts.name}</p>
+                                    )}
+                                    </CardContent>
+                                    <CardActions>
+                                    <Button variant="contained" color="secondary" size="small">Join Session</Button>
+                                    </CardActions>
+                                </Card>
+                            )
+                        })}
+                    </>
                     }
                     
                     

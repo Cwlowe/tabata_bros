@@ -3,9 +3,9 @@ import {createLogger} from 'redux-logger'
 import {composeWithDevTools} from 'redux-devtools-extension'
 import thunkMiddleware from 'redux-thunk'
 //import reducers
-import workoutReducer from './workouts'
+import state from './workouts'
 
-const reducer = combineReducers({workoutReducer})
+const reducer = combineReducers({state})
 
 const middleware = composeWithDevTools(
     applyMiddleware(thunkMiddleware,createLogger({collapsed:true}))
