@@ -20,25 +20,43 @@ import FormLabel from '@material-ui/core/FormLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
-import TextField from '@material-ui/core/TextField'
+// import TextField from '@material-ui/core/TextField'
 import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles({
     root: {
       minWidth: 275,
       marginTop: '10%',
-      padding:'3%'
+      padding:'3%',
+      backgroundColor:"#FEFEFE"
     },
     submitBtn:{
       marginLeft:"5%",
-      marginRight:"5%"
+      marginRight:"5%",
+      backgroundColor:"#243665",
+      color:"#FEFEFE"
     },
     sessionCards:{
-        backgroundColor:"#A9FFF7",
-        marginTop:"5%"
-    }
+        backgroundColor:"#243665",
+        marginTop:"5%",
+        color:"#8BD8BD"
+    },
+    text:{
+        color:"#243665"
+    },
+    formTitle:{
+        color:"#243665"
+    },
+    button:{
+        color:"#243665",
+        backgroundColor:"#8BD8BD"
+    },
+    revButton:{
+        color:"#FEFEFE",
+        backgroundColor:"#243665"
+    },
   });
- const WorkoutsPage = ()=>{
+ const TabataGeneratorPage = ()=>{
     const [state,setState] = useState({
         listView: true,
         sessions:[]
@@ -59,9 +77,9 @@ const useStyles = makeStyles({
     },[dispatch])
 
     return(
-        <div style={{ backgroundColor: '#cfe8fc', height: '100vh' }}>
-            <Container maxWidth="xl" style={{ backgroundColor: '#cfe8fc', height: '100vh' }}>
-                <Container maxWidth="md" style={{height: '100vh',paddingTop:'3vh' }}>
+        <div style={{ backgroundColor: '#8BD8BD', height: '100vh', overflowY:"auto"}}>
+            <Container maxWidth="xl" style={{ backgroundColor: '#8BD8BD', height: '100vh'}}>
+                <Container maxWidth="md" style={{height: '100vh',paddingTop:'3vh',paddingBottom:'3vh' }}>
                    <Grid container justify="center" alignContent="center" spacing={3}>
                        <Grid item xs={12}>
                        <Card className={classes.root} variant="outlined">
@@ -137,6 +155,7 @@ const CreateSession = (props)=>{
                 error: false,
                 session:[]
             })
+            props.toggleCreateView()
         }
         
     }
@@ -177,9 +196,9 @@ const CreateSession = (props)=>{
     const errorName = state.name.length === 0;
     return(
         <>
-            <div>
+            <h2 className={classes.formTitle}>
                 Create Session View
-            </div>
+            </h2>
             {
                 state.error ? 
                 <Alert severity="error">Please fill out the required fields</Alert>:
@@ -189,7 +208,7 @@ const CreateSession = (props)=>{
                 <Grid container spacing={3}>
                     <Grid item xs={6}>
                         <FormControl required error={errorName}>
-                            <InputLabel htmlFor="name">Session Name</InputLabel>
+                            <InputLabel className={classes.text} htmlFor="name">Session Name</InputLabel>
                             <Input id="name" value={state.name} onChange={handleChange} />
                             <FormHelperText>This field is required</FormHelperText>
                         </FormControl>
@@ -209,9 +228,9 @@ const CreateSession = (props)=>{
                     </FormControl>
                     </Grid> */}
                     <Grid item xs={12}>
-                    <FormControl required error={errorType} component="fieldset" className={classes.formControl}>
-                        <FormLabel component="legend">Pick types you want to work on.</FormLabel>
-                        <FormGroup>
+                    <FormControl required error={errorType} className={classes.text} component="fieldset">
+                        <FormLabel className={classes.text} component="legend">Select the body part you want to strengthen.</FormLabel>
+                        <FormGroup className={classes.text}>
                         <FormControlLabel
                             control={<Checkbox checked={state.type.core} onChange={handleCheckbox} name="core" />}
                             label="Core"
@@ -244,10 +263,10 @@ const CreateSession = (props)=>{
             </form>
             <CardActions>
                 
-                <Link href="#" onClick={props.toggleCreateView}>
+                <Link className={classes.text} href="#" onClick={props.toggleCreateView}>
                 &lt;back
                 </Link>
-                <Button className={classes.submitBtn} variant="contained" color="primary" onClick={handleSubmit}>
+                <Button className={classes.submitBtn} variant="contained" onClick={handleSubmit}>
                 Submit
                 </Button>
                 
@@ -266,29 +285,35 @@ const ListSession = (props)=>{
         <>
             <Grid container>
                 <Grid item xs={12}>
-                <Button className={classes.button} variant="contained" color="primary" onClick={props.toggleCreateView}>Create a Random Session</Button>
+                <h1 className={classes.text}>Tabata Generator</h1>
+                <p className={classes.text}>Create your own circuit with our generator. Once you have your circuit created, you’ll want to do each move for 20 seconds with a 10 second break and complete each circuit at least 4 times.</p>
+                <Button className={classes.button} variant="contained" onClick={props.toggleCreateView}>Create a Random Session</Button>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} className={classes.text}>
                     {sessions.length === 0 ? 
                      <h1>There are no sessions right now please create one.</h1> 
                      : 
                     <>
-                        <h1>List of Sessions</h1>
+                        <h2>List of Sessions</h2>
+                        <Grid container spacing={2}>
                         {sessions.map(sess=>{
                             return(
-                                <Card className={classes.sessionCards} id={sess.id}>
-                                    <CardContent>
-                                    <h2>{sess.name}</h2>
-                                    {sess.session.map((workouts)=>
-                                        <p>{workouts.name}</p>
-                                    )}
-                                    </CardContent>
-                                    <CardActions>
-                                    <Button variant="contained" color="secondary" size="small">Join Session</Button>
-                                    </CardActions>
-                                </Card>
+                                <Grid item xs="4">
+                                    <Card className={classes.sessionCards} id={sess.id}>
+                                        <CardContent className = {classes.cardContent}>
+                                        <h2>{sess.name}</h2>
+                                        {sess.session.map((workouts)=>
+                                            <p>{workouts.name}</p>
+                                        )}
+                                        </CardContent>
+                                        <CardActions>
+                                        <Button variant="contained" className={classes.button} size="small">Join Session</Button>
+                                        </CardActions>
+                                    </Card>
+                                </Grid>
                             )
                         })}
+                        </Grid>
                     </>
                     }
                     
@@ -302,4 +327,4 @@ const ListSession = (props)=>{
 
 
 
-export default WorkoutsPage;
+export default TabataGeneratorPage;

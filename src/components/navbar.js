@@ -47,13 +47,13 @@ const Navbar = ()=>{
   const list = (anchor) => {
     let list = [
       {
-        name: 'Sessions',
-        href: '/workouts',
+        name: 'Tabata Generator',
+        href: '/tabataGenerator',
         icon: <BallotIcon color="primary"/>
       },
       {
-        name: 'Create Workout',
-        href: '/createWorkout',
+        name: 'Create a Circuit',
+        href: '/circuitGenerator',
         icon: <AddBoxIcon color="primary"/>
       },
     ]
@@ -79,7 +79,7 @@ const Navbar = ()=>{
 }
     return (
         <div className={classes.root}>
-          <AppBar position="static" style={{backgroundColor:"#97D8C4"}}>
+          <AppBar position="static" style={{backgroundColor:"#243665"}}>
             <Toolbar>
               <IconButton edge="start" className={classes.menuButton} color="primary" aria-label="menu">
                 {['left'].map((anchor) => (
@@ -91,10 +91,10 @@ const Navbar = ()=>{
                   </React.Fragment>
                 ))}
               </IconButton>
-              <Link href="/" color="inherit" className={classes.title} >
+              <Link href="/" style={{color:"#FEFEFE"}} className={classes.title} >
                 Tabata Bros
               </Link>
-              <Button color="inherit">Login</Button>
+              <Button style={{color:"#FEFEFE"}}>Login</Button>
             </Toolbar>
           </AppBar>
         </div>

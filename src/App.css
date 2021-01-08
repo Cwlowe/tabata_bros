@@ -1,17 +1,25 @@
+/* colors
+teal: #8BD8BD
+dark blue: #243665
+light blue: #cfe8fc
+light purple:#8AAAE5
+white: #FEFEFE
+*/
 .App {
-  text-align: center;
-}
-
-.App-header {
-  background-color: #FFDCCC;
+  text-align: left;
+  background-color: #97D8C4;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: black;
 }
+.AppCard{
+  width:100vh;
+}
+
 
 /* Navbar CSS styles */
 .navBar{

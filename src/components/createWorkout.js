@@ -23,10 +23,18 @@ const useStyles = makeStyles({
     root: {
       minWidth: 275,
       marginTop: '10%',
-      padding:'3%'
+      padding:'3%',
+
     },
     formControl: {
         margin: 3,
+    },
+    text:{
+        color:"#243665"
+    },
+    button:{
+        color:"#FEFEFE",
+        backgroundColor:"#243665"
     },
   });
 
@@ -98,13 +106,12 @@ const useStyles = makeStyles({
     const errorType = state.type.length === 0;
     const errorName = state.name.length === 0;
     return(
-        <div style={{ backgroundColor: '#cfe8fc', height: '100vh' }}>
-            <Container maxWidth="xl" style={{ backgroundColor: '#cfe8fc', height: '100vh' }}>
+        <div style={{ backgroundColor: '#8BD8BD', height: '100vh' }}>
+            <Container maxWidth="xl" style={{ backgroundColor: '#8BD8BD', height: '100vh' }}>
                 <Container maxWidth="sm" style={{height: '100vh',paddingTop:'3vh' }}>
                     <Card className={classes.root} variant="outlined">
                         <CardContent >
-                        
-                            <form >
+                            <form className={classes.text}>
                                 <Grid container spacing={3}>
                                     {
                                         state.error ? 
@@ -170,7 +177,7 @@ const useStyles = makeStyles({
                             </form>
                         </CardContent>
                         <CardActions>
-                            <Button variant="contained" color="primary" onClick={handleSubmit}>
+                            <Button variant="contained" className={classes.button} onClick={handleSubmit}>
                             Submit
                             </Button>
                         </CardActions>

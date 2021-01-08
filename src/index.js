@@ -4,8 +4,8 @@ import './index.css';
 //components
 import Navbar from './components/navbar'
 import App from './App';
-import CreateWorkout from './components/createWorkout'
-import WorkoutsPage from './components/workoutsPage'
+import CircuitGenerator from './components/CreateWorkout'
+import TabataGenerator from './components/TabataGeneratorPage'
 
 //redux store
 import store from './store'
@@ -25,8 +25,8 @@ ReactDOM.render(
     <Navbar />
     <Router>
       <Route exact path="/" component={App}/>
-      <Route path="/createWorkout" component={CreateWorkout}/>
-      <Route path="/workouts" component={WorkoutsPage}/>
+      <Route path="/circuitGenerator" component={CircuitGenerator}/>
+      <Route path="/tabataGenerator" component={TabataGenerator}/>
     </Router>
     </ThemeProvider>
   </Provider>,
